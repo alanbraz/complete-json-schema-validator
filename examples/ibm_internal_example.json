@@ -1,0 +1,16 @@
+{
+  "name": "WatsonNET",
+  "version": "v0.3",
+  "description": "Implementation of WatsonNET",
+  "domain": {
+    "domain_type": "Vision",
+    "tasks": ["Image Classification"]
+  },
+  "tags": [ "watsonnet", "ibm internal example" ],
+  "visibility": {
+    "visibility": "private",
+    "business_unit": "IBM Research",
+    "division": "Research AI",
+    "organziation": "Watson Research Lab"
+  }
+}

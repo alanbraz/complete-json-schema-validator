@@ -1,0 +1,94 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$id": "model.definition.schema.json",
+  "id": "model.definition.schema.json",
+  "title": "Model Definition",
+  "description": "Metadata subobject for a model definition, such as links to code, algorithms, or neural network topologies. This subobject corresponds to the development stage (pre-training) of the model lifecycle.",
+  "type": "object",
+  "properties": {
+    "code": {
+      "type": "array",
+      "description": "Collection of code objects that define model. May include repositories, algorithms, network topologies, etc.",
+      "items": {
+        "anyOf": [
+          {"$ref": "model.definition.schema.json#/definitions/codeobject"},
+          {"$ref": "model.definition.schema.json#/definitions/repoobject"}
+        ]
+      }
+    },
+    "topology": {
+      "description": "Higher-level description of network toplogy or machine learning approaches that model employs.",
+      "type": "object"
+    },
+    "input_data_schema": {
+	     "allOf": [{ "$ref": "http://json-schema.org/draft-04/schema#" },
+		  {"description": "JSON Schema for input data that model definition may expect, such as what format and dimensions the training dataset looks like."}]
+    },
+      "output_data_schema": {
+	       "allOf": [{ "$ref": "http://json-schema.org/draft-04/schema#" },
+		    {"description": "JSON Schema for output data that a model definition may output, such as what format and dimensions the prediction result looks like."}]
+    },
+    "hyperparameter_schema": {
+	     "allOf": [{ "$ref": "http://json-schema.org/draft-04/schema#" },
+		  {"description": "JSON Schema for hyperparameters that a model definition may make use of, such as batch size, learning rate, etc."}]
+    },
+    "license": {
+      "type": "string",
+      "description": "Type of license model code is released under."
+    }
+  },
+  "definitions": {
+    "codeobject": {
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["code"]
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "connection": {
+          "$ref": "model.common.schema.json#/connection"
+        },
+        "framework": {
+          "$ref": "model.common.schema.json#/framework"
+        }
+      }
+    },
+    "repoobject": {
+      "type": "object",
+      "required": ["type"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["repo"]
+        },
+        "repo_type": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "owner": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "sha": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "name": "bias checker output",
+  "description": "Resulting model from running de-biasing, based on #38",
+  "provenance": {
+    "previous_model_id": "1",
+    "modifications": [
+      {
+        "type": "bias",
+        "modification_date": "2018-05-07T18:25:43.511Z",
+        "details": {
+          "checker": {
+            "description": "bias checker",
+            "version": "v1"
+          },
+          "de_biaser_parameters": [0, 1, 2],
+          "confidence": 0.90
+        }
+      }
+    ]
+  },
+  "evaluations": [
+    {
+      "evaluation_type": "bias",
+      "biasValue": 0,
+      "class": "",
+      "description": "",
+      "type": "data_bias"
+    }
+  ]
+}

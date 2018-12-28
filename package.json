@@ -1,0 +1,41 @@
+{
+  "name": "complete-json-schema-validator",
+  "version": "1.0.0",
+  "description": "Complete JSON schema validator based on ajv - Another JSON Schema Validator",
+  "main": "./lib/index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "devDependencies": {
+    "json-pointer": "^0.6.0",
+    "json-schema-ref-parser": "^5.0.3",
+    "mocha": "^5.2.0",
+    "mocha-assume": "^1.0.0"
+  },
+  "dependencies": {
+    "ajv": "^6.5.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alanbraz/complete-json-schema-validator.git"
+  },
+  "keywords": [
+    "json",
+    "schema",
+    "validator"
+  ],
+  "author": {
+    "name": "Avi Shinnar",
+    "url": "https://github.com/shinnar"
+  },
+  "contributors": {
+    "name" : "Alan Braz",
+    "email" : "alanbraz@gmail.com",
+    "url" : "https://github.com/alanbraz/"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/alanbraz/complete-json-schema-validator/issues"
+  },
+  "homepage": "https://github.com/alanbraz/complete-json-schema-validator#readme"
+}

@@ -1,0 +1,27 @@
+{
+  "name": "MNIST in Tensorflow",
+  "description": "Example from https://github.com/tensorflow/models/tree/master/official/mnist",
+  "extraction": [{
+    "type": "github",
+    "url": "https://github.com/tensorflow/models/tree/master/official/mnist"
+  }],
+  "definition": {
+    "code": [
+      {
+        "type": "code",
+        "name": "mnist.py",
+        "framework": {
+          "name": "tensorflow",
+          "version": "r1.8"
+        },
+        "connection": {
+          "name": "github_url",
+          "connection": { },
+          "source": {
+            "url": "https://github.com/tensorflow/models/blob/master/official/mnist/mnist.py"
+          }
+        }
+      }
+    ]
+  }
+}

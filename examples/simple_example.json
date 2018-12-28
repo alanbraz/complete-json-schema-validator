@@ -1,0 +1,21 @@
+{
+  "name": "AlexNET",
+  "version": "v0.3",
+  "description": "Implementation of AlexNET",
+  "domain": {
+    "domain_type": "Vision",
+    "tasks": ["Image Classification"]
+  },
+  "tags": [ "alexnet", "canonical example" ],
+  "references": [{
+    "title": "ImageNet Classification with Deep Convolutional Neural Networks",
+    "authors": [
+      "Alex Krizhevsky", "Ilya Sutskever", "Geoffrey E. Hinton"
+    ],
+    "url": "http://papers.nips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks"
+  }],
+  "visibility": {
+    "visibility": "public",
+    "license": "MIT License"
+  }
+}

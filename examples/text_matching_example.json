@@ -1,0 +1,82 @@
+{
+  "name": "Bilateral Multi-Perspective Matching for Natural Language Sentences",
+  "authors": [
+    {"name": "ZhiguoWang"},
+    {"name": "Wael Hamza"},
+    {"name": "Radu Florian"}
+  ],
+  "domain": {
+    "domain_type": "NLP",
+    "tasks": ["paraphrase identification", "natural language inference", "answer sentence selection"]
+  },
+  "references": [
+    {
+      "title": "Bilateral Multi-Perspective Matching for Natural Language Sentences",
+      "authors": ["ZhiguoWang", "Wael Hamza", "Radu Florian"],
+      "url": "https: //arxiv.org/abs/1702.03814"
+    }
+  ],
+  "extraction": [{
+    "type": "arxiv",
+    "confidence": 0.6,
+    "completeness": 0.5,
+    "url": "https: //arxiv.org/abs/1702.03814"
+  }],
+  "definition": {
+    "code": [{
+      "type": "repo",
+      "repo_type": "github",
+      "url": "https://zhiguowang.github.io/"
+    }]
+  },
+  "training": {
+    "datasets": [{
+        "Type": "Text",
+        "Format": "gzip",
+        "Tasks": "Classification",
+        "Sub-Tasks": "",
+        "Source": "https://data.quora.com/First-Quora-Dataset-Release-Question-Pairs",
+        "Name": "Quora Question Pairs",
+        "Info": "",
+        "Split": "380000,1000,1000",
+        "Metrics": "Accuracy",
+        "data_preprocessing": {
+          "normalization": "mean variance normalization"
+        }
+      },
+      {
+        "Type": "Text",
+        "Format": "gzip",
+        "Tasks": "Classification",
+        "Sub-Tasks": "",
+        "Source": "https://data.quora.com/First-Quora-Dataset-Release-Question-Pairs",
+        "Name": "SNLI",
+        "Info": "",
+        "Split": "",
+        "Metrics": "Accuracy"
+      },
+      {
+        "Type": "Text",
+        "Format": "gzip",
+        "Tasks": "Classification",
+        "Sub-Tasks": "",
+        "Source": "https://data.quora.com/First-Quora-Dataset-Release-Question-Pairs",
+        "Name": "TREC-QA",
+        "Info": "",
+        "Split": "",
+        "Metrics": "Accuracy"
+      },
+      {
+        "Type": "Text",
+        "Format": "gzip",
+        "Tasks": "Classification",
+        "Sub-Tasks": "",
+        "Source": "https://data.quora.com/First-Quora-Dataset-Release-Question-Pairs",
+        "Name": "WikiQA",
+        "Info": "",
+        "Split": "",
+        "Metrics": "Accuracy"
+      }
+    ]
+  }
+}

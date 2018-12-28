@@ -1,0 +1,68 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$id": "model.trained_model.schema.json",
+  "id": "model.trained_model.schema.json",
+  "title": "Trained Model",
+  "description": "Metadata subobject for a trained model, such as links to trained model binaries, scoring services, and applications that use the current model. This subobject corresponds to the deployment stage (post-training) of the model lifecycle. Trained model binaries are in this subobject and not the training object because often (like in model zoos), we do not know anything about the details of the training process to generate the binary but we wish to use the binary in a deployment such as scoring or benchmarking.",
+  "type": "object",
+  "properties": {
+    "binaries": {
+      "type": "array",
+      "description": "Trained model binaries. Binaries are in this subobject and not the training object because often (like in model zoos), we do not know anything about the details of the training process to generate the binary but we wish to use the binary in a deployment such as scoring or benchmarking.",
+      "items": {
+        "$ref": "model.trained_model.schema.json#/definitions/binaryobject"
+      }
+    },
+    "input_data_schema": {
+	"allOf": [{ "$ref": "http://json-schema.org/draft-04/schema#" },
+		  {"description": "JSON Schema for input data that a trained model may expect, such as what format and dimensions a user dataset looks like."}]
+    },      
+    "output_data_schema": {
+	"allOf": [{ "$ref": "http://json-schema.org/draft-04/schema#" },
+		  {"description": "JSON Schema for output data that a trained model may output, such as a binary prediction or probabilistic classification looks like."}]
+    }
+  },
+  "definitions": {
+    "binaryobject": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "connection": {
+          "$ref": "model.common.schema.json#/connection"
+        },
+        "framework": {
+          "$ref": "model.common.schema.json#/framework"
+        }
+      }
+    },
+    "scoringobject": {
+      "type": "object",
+      "required": ["type"],
+      "properties": {
+        "type": {
+          "enum": ["online", "batch"]
+        },
+        "status": {
+          "type": "object",
+          "required": ["state"],
+          "properties": {
+            "state": {
+              "type": "string"
+            }
+          }
+        },
+        "url": {
+          "type": "string"
+        },
+        "schema_url": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

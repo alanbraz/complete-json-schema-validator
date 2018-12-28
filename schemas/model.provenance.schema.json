@@ -1,0 +1,41 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$id":"model.provenance.schema.json",
+  "id":"model.provenance.schema.json",
+  "title": "Model Provenance",
+  "description": "Metadata subobject for model provenance, information about previous models the current model is derived from and the modifications applied to create current model. For example, compression, robustness, bias removal, hardening, or optimization services may take a model and generate an improved model. This subobject keeps track of such modifications.",
+  "type": "object",
+  "properties": {
+    "previous_model_id": {
+        "type": "string",
+        "description": "ID of previous model object that has been modified to create current model."
+    },
+    "modifications": {
+      "description": "Set of modifications/transformations applied to previous model to create current model. For example, a bias removal service was applied to the previous model to create the current model. This object then stores the results of that service.",
+      "type": "array",
+      "items": {
+        "$ref": "model.provenance.schema.json#/definitions/modification"
+      }
+    }
+  },
+  "definitions": {
+    "modification": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "Type of modification applied to model."
+        },
+        "modification_date": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp for when modification was applied."
+        },
+        "details": {
+          "type": "object",
+          "description": "Catch-all for modification details, will probably be very specific to type."
+        }
+      }
+    }
+  }
+}

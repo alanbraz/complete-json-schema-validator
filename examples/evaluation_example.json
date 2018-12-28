@@ -1,0 +1,36 @@
+{
+  "name": "multiple evaluation type example",
+  "description": "Using three different types of evalutations",
+  "evaluations": [
+    {
+      "evaluation_type": "bias",
+      "biasValue": 0,
+      "class": "",
+      "description": "",
+      "type": "data_bias"
+    },
+    {
+      "evaluation_type": "robustness",
+      "path": "",
+      "average perturbation": 0,
+      "empirical robustness": 0,
+      "model accuracy on adversarial samples": 0,
+      "model accuracy on test data:": 0,
+      "reduction in confidence": 0,
+      "technique": "fgsm",
+      "mode": "adversarialattack",
+      "type": "robustness_original_model"
+    },
+    {
+      "evaluation_type": "training_evaluation",
+      "method": "binary",
+      "metrics": [
+        {
+          "name": "areaUnderROC",
+          "threshold": 0.9,
+          "value": 0.94
+        }
+      ]
+    }
+  ]
+}

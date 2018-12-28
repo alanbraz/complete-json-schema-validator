@@ -1,0 +1,181 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$id": "model.common.schema.json",
+  "id": "model.common.schema.json",
+  "title": "Common",
+  "description": "Utility common definitions for model schema. Used in various parts of the other schemas.",
+  "connection": {
+    "type": "object",
+    "required": ["name"],
+    "description": "Represents connection to a resource or file. Referenced from WML API.",
+    "properties": {
+      "name": {
+        "type": "string",
+        "description": "Name which identifies this connection."
+      },
+      "connection": {
+        "type": "object",
+        "description": "Various fields needed to perform connection"
+      },
+      "source": {
+        "type": "object",
+        "description": "Optional details of the data store"
+      }
+    }
+  },
+  "framework": {
+    "type": "object",
+    "description": "AI-related software framework or library. Referenced from WML API.",
+    "required": ["name"],
+    "properties": {
+      "name": {
+        "type": "string"
+      },
+      "version": {
+        "type": "string"
+      },
+      "runtimes": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["name", "version"],
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "version": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "libraries": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["name", "version"],
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "version": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  },
+  "dataset": {
+    "description": "Metadata to describe a dataset for a model. May be of various types such as training or input. Should be a wrapper to a Data Asset object in Watson Knowledge Catalog.",
+    "type": "object",
+    "properties": {
+      "data_asset_id": {
+        "type": "string",
+        "description": "Foreign key to Data Asset object in Watson Knowledge Catalog"
+      },
+      "name": {
+        "type": "string"
+      },
+      "description": {
+        "type": "string"
+      },
+      "data_type": {
+        "type": "string"
+      },
+      "data_format": {
+        "type": "string"
+      },
+      "tasks": {
+        "type": "array"
+      },
+      "sub_tasks": {
+        "type": "array"
+      },
+      "dataset_split": {
+        "type": "object",
+        "items": {
+          "$ref": "#/definitions/data_split"
+        }
+      },
+      "classes": {
+        "type": "integer"
+      },
+      "connection": {
+        "$ref": "model.common.schema.json#/connection"
+      },
+      "schema": {
+	       "allOf": [{ "$ref": "http://json-schema.org/draft-04/schema#" },
+		         {"description": "JSON schema describing the schema of the dataset"}]
+      },
+      "data_preprocessing": {
+        "description": "A sequence of preprocessing steps to be performed on the input dataset before the data could be inputted to the model.",
+        "$ref": "#/definitions/preprocess"
+      }
+    }
+  },
+  "features": {
+    "description": "The metadata about the features to be extracted from the data and the set of feature extraction functions",
+    "type": "object",
+    "properties": {
+      "features_function": {
+        "type": "string",
+        "description": "The function to extract the feature from data such as SIFT, SURF, or TF-IDF"
+      },
+      "features_descriptor": {
+        "type": "string",
+        "description": "The description of the feature extraction function"
+      },
+      "num_features": {
+        "type": "integer",
+        "description": "The length (dimensionality) of the extracted features"
+      },
+      "features_type": {
+        "type": "string",
+        "description": "The type of the extracted features such as continuous, discrete, categorical, or binary"
+      }
+    }
+  },
+  "definitions": {
+    "data_split": {
+      "type": "object",
+      "properties": {
+        "train": {
+          "type": "integer"
+        },
+        "validation": {
+          "type": "integer"
+        },
+        "test": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "train"
+      ]
+    },
+    "preprocess": {
+      "description": "Metadata to describe the sequence of preprocessing steps to be performed on the raw data to convert it the consummable input format.",
+      "type": "object",
+      "properties": {
+        "operators": {
+          "type": "array",
+          "description": "The set of transformation operations such as cropping, scaling, or data normalization",
+          "items": {
+            "type": "string"
+          }
+        },
+        "noise_removers": {
+          "type": "array",
+          "description": "The set of noise removal steps",
+          "items": {
+            "type": "string"
+          }
+        },
+        "filters": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

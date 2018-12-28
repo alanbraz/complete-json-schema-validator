@@ -1,0 +1,22 @@
+{
+  "name": "caffe2 squeezenet",
+  "description": "Example from https://github.com/caffe2/models/tree/master/squeezenet",
+  "trained_model": {
+    "binaries": [
+      {
+        "name": "init_net.pb",
+        "connection": {
+          "name": "github_url",
+          "connection": { },
+          "source": {
+            "url": "https://github.com/caffe2/models/blob/master/squeezenet/init_net.pb"
+          }
+        },
+        "framework": {
+          "name": "caffe2",
+          "version": "v0.8.1"
+        }
+      }
+    ]
+  }
+}

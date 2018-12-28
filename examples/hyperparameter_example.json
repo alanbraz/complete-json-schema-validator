@@ -1,0 +1,53 @@
+{
+  "name": "MNIST in Tensorflow with hyperparameters",
+  "description": "Usage of hyperparameter schema example",
+  "extraction": [{
+    "type": "github",
+    "url": "https://github.com/tensorflow/models/tree/master/official/mnist"
+  }],
+  "definition": {
+    "code": [
+      {
+        "type": "code",
+        "name": "mnist.py",
+        "framework": {
+          "name": "tensorflow",
+          "version": "r1.8"
+        },
+        "connection": {
+          "name": "github_url",
+          "connection": { },
+          "source": {
+            "url": "https://github.com/tensorflow/models/blob/master/official/mnist/mnist.py"
+          }
+        }
+      }
+    ],
+    "hyperparameter_schema": {
+      "type": "object",
+      "required": ["learning_rate", "num_gpus", "batch_size", "train_epochs"],
+      "properties": {
+        "learning_rate": {
+          "type": "number"
+        },
+        "num_gpus": {
+          "type": "number"
+        },
+        "batch_size": {
+          "type": "number"
+        },
+        "train_epochs": {
+          "type": "number"
+        }
+      }
+    }
+  },
+  "training": {
+    "hyperparameters": {
+      "learning_rate": 0.001,
+      "num_gpus": 1,
+      "batch_size": 100,
+      "train_epochs": 40
+    }
+  }
+}

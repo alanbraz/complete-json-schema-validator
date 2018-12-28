@@ -1,0 +1,62 @@
+{
+  "name": "MNIST in Tensorflow, trained in WML",
+  "description": "Example from https://github.com/tensorflow/models/tree/master/official/mnist",
+  "definition": {
+    "code": [
+      {
+        "type": "code",
+        "name": "mnist.py",
+        "framework": {
+          "name": "tensorflow",
+          "version": "r1.8"
+        },
+        "connection": {
+          "name": "github_url",
+          "connection": { },
+          "source": {
+            "url": "https://github.com/tensorflow/models/blob/master/official/mnist/mnist.py"
+          }
+        }
+      }
+    ]
+  },
+  "training": {
+    "datasets": [
+      {
+        "name": "mnist",
+        "type": "training",
+        "connection": {
+          "name": "object_storage",
+          "connection": {
+            "auth_url": "https://identity.open.softlayer.com",
+            "projectId": "f771e5d082e24857adb7554d15fc357c",
+            "region": "dallas",
+            "userId": "user_name",
+            "password": "password"
+          },
+          "source": {
+            "container": "batchjob",
+            "filename": "train-images-idx3-ubyte.gz",
+            "fileformat": "gz",
+            "inferschema": 1,
+            "firstlineheader": true,
+            "type": "bluemixobjectstorage"
+          }
+        }
+      }
+    ],
+    "training_output": {
+      "name": "object_storage",
+      "connection": {
+        "access_key_id": "aabbbccMhAI8BGNxuknp",
+        "secret_access_key": "bbbcccMhAI8BGNxuknp",
+        "endpoint_url": "https://s3-api.dal-us-geo.objectstorage.softlayer.net"
+      },
+      "source": {
+        "bucket": "my-models",
+        "key": "my-model",
+        "type": "s3"
+      }
+    }
+  }
+}

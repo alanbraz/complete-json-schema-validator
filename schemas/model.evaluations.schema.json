@@ -1,0 +1,146 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$id":"model.evaluations.schema.json",
+  "id":"model.evaluations.schema.json",
+  "title": "Model Evaluations",
+  "description": "Metadata subobject for model evaluations or annotations. An evaluation or annotation may be applied to any phase of the model lifecycle. Examples include a security score via analyzing a model definition, performance metrics via model training, and compression score via analyzing a trained model binary.",
+  "type": "array",
+  "items": {
+     "anyOf": [
+        {
+          "$ref": "model.evaluations.schema.json#/definitions/training_evaluation"
+        },
+        {
+          "$ref": "model.evaluations.schema.json#/definitions/robustness"
+        },
+        {
+          "$ref": "model.evaluations.schema.json#/definitions/bias"
+        }
+     ]
+  },
+  "definitions": {
+    "training_evaluation": {
+      "type": "object",
+      "description": "Describes the results of a training job. Referenced from WML API.",
+      "required": ["evaluation_type", "method", "metrics"],
+      "properties": {
+        "evaluation_type": {
+          "type": "string",
+          "enum": ["training_evaluation"]
+        },
+        "method": {
+          "type": "string"
+        },
+        "metrics": {
+          "type": "array"
+        }
+      }
+    },
+    "robustness": {
+      "description": "Captures robustness of the input model and the hardened model",
+      "type": "object",
+      "required": [
+        "evaluation_type"
+      ],
+      "properties": {
+        "evaluation_type": {
+          "type": "string",
+          "enum": ["robustness"]
+        },
+        "average_perturbation": {
+          "type": "integer",
+          "description": ""
+        },
+        "model_accuracy_adversary": {
+          "type": "integer",
+          "description": ""
+        },
+        "model_accuracy_test": {
+          "type": "integer",
+          "description": ""
+        },
+        "reduction_confidence": {
+          "type": "integer",
+          "description": ""
+        },
+        "path": {
+          "type": "string",
+          "description": ""
+        },
+        "technique": {
+          "type": "string",
+          "description": ""
+        },
+        "mode": {
+          "type": "string",
+          "description": ""
+        },
+        "type": {
+          "type": "string",
+          "description": ""
+        }
+      }
+    },
+    "bias": {
+      "type": "object",
+      "required": [
+        "evaluation_type"
+      ],
+      "properties": {
+        "evaluation_type": {
+          "type": "string",
+          "enum": ["bias"]
+        },
+        "biasValue": {
+          "type": "integer",
+          "description": "Disparate impact ratio"
+        },
+        "valClassFavorTypeMinority": {
+          "type": "integer",
+          "description": "Count of rows where class is favourable and protected attribute (PA) is minority"
+        },
+        "valTypeMinority": {
+          "type": "integer",
+          "description": "Count of rows where protected attribute (PA) is minority"
+        },
+        "valClassFavorTypeMajority": {
+          "type": "integer",
+          "description": "Count of rows where class is favourable and PA is majority"
+        },
+        "valTypeMajority": {
+          "type": "integer",
+          "description": "Count of rows where protected attribute (PA) is majority"
+        },
+        "threshold": {
+          "type": "integer",
+          "description": "Golden Ration, specified by the user"
+        },
+        "majority": {
+          "type": "string",
+          "description": "Protected attribute (PA) values which belong to majority class"
+        },
+        "minority": {
+          "type": "string",
+          "description": "Protected attribute (PA) values which belong to minority class"
+        },
+        "protectedAttribute": {
+          "type": "string",
+          "description": "Sensitive features of the data"
+        },
+        "favourableClass": {
+          "type": "string",
+          "description": "elements in class which is favourable for bias( eg. positive sentiment, getting home load, high income etc)"
+        },
+        "class": {
+          "type": "string",
+          "description": "Various cateogries of the data"
+        },
+        "description": {
+          "type": "string",
+          "description": "Description of the bias model"
+        }
+      }
+    }
+
+  }
+}

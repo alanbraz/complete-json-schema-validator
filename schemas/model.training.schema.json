@@ -1,0 +1,55 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$id":"model.training.schema.json",
+  "id":"model.training.schema.json",
+  "title": "Model Training",
+  "description": "Metadata subobject for a model training, such as links to training datasets, training jobs, and results of jobs such as evaluation metrics. This subobject corresponds to the training stage of the model lifecycle.",
+  "type": "object",
+  "properties": {
+    "datasets": {
+      "type": "array",
+      "description": "Collection of dataset objects. Describes the dataset itself as well as the connection to the dataset. Everything WML or some other training service needs to access the dataset and use for training should be here.",
+      "items": {
+        "$ref": "model.common.schema.json#/dataset"
+      }
+    },
+    "features": {
+      "description": "The set of feature extraction functions.",
+      "$ref": "model.common.schema.json#/features"
+    },
+    "hyperparameters": {
+      "description": "Input to training of the hyperparameter configuration for a particular training job.",
+      "$ref": "model.training.schema.json#/definitions/hyperparameters"
+    },
+    "training_job": {
+      "description": "Metadata to describe particular training job. May include information to connect to particular training services such as WML. Everything needed to run the job should be included here.",
+      "$ref": "model.training.schema.json#/definitions/job"
+    },
+    "training_output": {
+      "description": "Connection to content that is result of training. We expect this content to be trained model binaries that are output to object storage.",
+      "$ref": "model.common.schema.json#/connection"
+    }
+  },
+  "definitions": {
+    "hyperparameters": {
+      "example": "examples/hyperparameter_example.json#/training/hyperparameters",
+      "description": "Describes hyperparameter configuration that was used for a particular job. The schema may be defined using a JSON schema.",
+      "definitions": {
+        "$dependent_schema": {
+          "enum":
+            ["/definition/hyperparameter_schema"]
+        }
+      }
+    },
+    "job": {
+      "type": "object",
+      "description": "Describes a particular training job including information to connect to training service such as WML.",
+      "properties": {
+        "connection": {
+          "description": "Connection to model training service used to run job.",
+          "$ref": "model.common.schema.json#/connection"
+        }
+      }
+    }
+  }
+}

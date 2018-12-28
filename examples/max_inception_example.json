@@ -1,0 +1,105 @@
+{
+  "name": "IBM Code Model Asset Exchange: Inception-ResNet-v2 on ImageNet",
+  "description": "Keras offers many imagenet models, this one has the highest accuracy. From https://github.com/IBM/MAX-Inception-ResNet-v2",
+  "domain": {
+    "domain_type": "Vision",
+    "tasks": ["Image Classification"],
+    "industries": ["General"]
+  },
+  "references": [{
+    "title": "Inception-v4, Inception-ResNet and the Impact of Residual Connections on Learning",
+    "authors": ["C. Szegedy", "S. Ioffe", "V. Vanhoucke", "A. Alemi"],
+    "url": "https://arxiv.org/abs/1602.07261",
+    "arxiv": "1602.07261"
+  }],
+  "trained_model": {
+    "binaries": [
+      {
+        "name": "Dockerfile",
+        "type": "Dockerfile",
+        "connection": {
+          "name": "github_url",
+          "connection": { },
+          "source": {
+            "url": "https://github.com/IBM/MAX-Inception-ResNet-v2/blob/master/Dockerfile"
+          }
+        },
+        "framework": {
+          "name": "Keras",
+          "license": "MIT"
+        },
+        "license": "Apache 2.0"
+      },
+      {
+        "name": "app.py",
+        "type": "Python",
+        "connection": {
+          "name": "github_url",
+          "connection": { },
+          "source": {
+            "url": "https://github.com/IBM/MAX-Inception-ResNet-v2/blob/master/app.py"
+          }
+        },
+        "framework": {
+          "name": "Keras",
+          "license": "MIT"
+        },
+        "license": "Apache 2.0"
+      },
+      {
+        "name": "config.py",
+        "type": "Python",
+        "connection": {
+          "name": "github_url",
+          "connection": { },
+          "source": {
+            "url": "https://github.com/IBM/MAX-Inception-ResNet-v2/blob/master/config.py"
+          }
+        },
+        "framework": {
+          "name": "Keras",
+          "license": "MIT"
+        },
+        "license": "Apache 2.0"
+      },
+      {
+        "name": "api/model.py",
+        "type": "Python",
+        "connection": {
+          "name": "github_url",
+          "connection": { },
+          "source": {
+            "url": "https://github.com/IBM/MAX-Inception-ResNet-v2/blob/master/api/model.py"
+          }
+        },
+        "framework": {
+          "name": "Keras",
+          "license": "MIT"
+        },
+        "license": "Apache 2.0"
+      },
+      {
+        "name": "api/__init__.py",
+        "type": "Python",
+        "connection": {
+          "name": "github_url",
+          "connection": { },
+          "source": {
+            "url": "https://github.com/IBM/MAX-Inception-ResNet-v2/blob/master/api/__init__.py"
+          }
+        },
+        "framework": {
+          "name": "Keras",
+          "license": "MIT"
+        },
+        "license": "Apache 2.0"
+      }
+    ],
+    "input_data_def": {
+      "type": "image",
+      "color": "rgb/hwc",
+      "width": 299,
+      "height": 299
+    }
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "name": "IBM Code Model Asset Exchange: Adversarial Cryptography Experiment",
+  "references": [{
+    "title": "Learning to Protect Communications with Adversarial Neural Cryptograph",
+    "authors": ["M. Abadi", "D. Andersen"],
+    "url": "https://arxiv.org/abs/1610.06918",
+    "arxiv": "1610.06918"
+  }],
+  "extraction": [
+    {
+      "type": "github",
+      "url": "https://github.com/IBM/MAX-Adversarial-Cryptography"
+    }
+  ],
+  "definition": {
+    "code": [
+      {
+        "type": "code",
+        "name": "adverserial_crypto.zip",
+        "connection": {
+          "name": "github_url",
+          "connection": { },
+          "source": {
+            "url": "https://github.com/IBM/MAX-Adversarial-Cryptography/blob/master/adverserial_crypto.zip"
+          }
+        },
+        "license": "Apache 2.0",
+        "framework": {
+          "name": "tensorflow",
+          "version": "1.5"
+        }
+      },
+      {
+        "type": "code",
+        "name": "run.sh",
+        "connection": {
+          "name": "github_url",
+          "connection": { },
+          "source": {
+            "url": "https://github.com/IBM/MAX-Adversarial-Cryptography/blob/master/run.sh"
+          }
+        },
+        "license": "Apache 2.0"
+      }
+    ]
+  },
+  "training": {
+    "training_job": {
+      "type": "wml"
+    },
+    "datasets": [
+        {
+            "name": "training reference",
+            "type": "training",
+            "connection": {
+              "name": "(training-data-reference_name)",
+              "type": "training",
+              "connection": {
+                "type": "s3",
+                "endpoint_url": "https://s3-api.us-geo.objectstorage.service.networklayer.com",
+                "access_key_id": "(FILL IN)",
+                "secret_access_key": "(FILL IN)"
+              },
+              "source": {
+                "bucket": "adversarial-crypto-training"
+              }
+            }
+        }
+    ],
+    "training_output": {
+      "name": "(training-results-reference_name)",
+      "connection": {
+        "type": "s3",
+        "endpoint_url": "https://s3-api.us-geo.objectstorage.service.networklayer.com",
+        "access_key_id": "(FILL IN)",
+        "secret_access_key": "(FILL IN)"
+      },
+      "source": {
+        "bucket": "adversarial-crypto-training-results"
+      }
+    }
+  }
+}

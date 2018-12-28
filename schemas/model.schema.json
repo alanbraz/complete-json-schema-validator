@@ -1,0 +1,231 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$id": "model.schema.json",
+  "id": "model.schema.json",
+  "title": "Model",
+  "description": "Declarative model metadata. Top-level object that contains discovery properties and any combination of the model subobjects. Each model subobject (definition, training, deployment, provenance) corresponds to a stage in the model lifecycle. However, it is possible to be missing information about a model from earlier phases. For example, a trained model binary from a model zoo without code or training information. Model metadata is declarative: it does not include source code, learned weights or parameters, etc. Instead, such artifacts are stored outside of the model metadata, for instance, in git, Jupyter, or cloud object storage, and the model metadata contains pointers to them. ",
+  "version": 0.4,
+  "type": "object",
+  "required": ["name"],
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Name of model.",
+      "example": "examples/simple_example.json#/name"
+    },
+    "version": {
+      "type": "string",
+      "description": "Version label for model object.",
+      "example": "examples/simple_example.json#/version"
+    },
+    "description": {
+      "type": "string",
+      "description": "Long-form description of model.",
+      "example": "examples/simple_example.json#/description"
+    },
+    "authors": {
+      "type": "array",
+      "description": "Original Authors of the model.",
+      "items": {
+        "$ref": "model.schema.json#/definitions/authorObject"
+      },
+      "example": "examples/wml_create_model_example.json#/authors"
+    },
+    "tags": {
+      "type": "array",
+      "description": "Assignable tags for model. Contains a user-assignable value. Referenced from WKC.",
+      "items": {
+        "type": "string"
+      },
+      "example": "examples/simple_example.json#/tags"
+    },
+    "domain": {
+      "$ref": "model.schema.json#/definitions/domainObject",
+      "description": "General domain or field for model.",
+      "example": "examples/simple_example.json#/domain"
+    },
+    "extraction": {
+      "type": "array",
+      "items": {
+        "$ref": "model.schema.json#/definitions/extractObject"
+      },
+      "description": "Details of automated extractors that this model is based from.",
+      "example": "examples/tensorflow_zoo_example.json#/extraction"
+    },
+    "references": {
+       "type": "array",
+       "items": {
+         "$ref": "model.schema.json#/definitions/refObject"
+       },
+       "description": "References such as academic papers that this model is based from."
+     },
+     "visibility": {
+       "$ref": "model.schema.json#/definitions/visibilityObject",
+       "description": "Visibility of the model, public or private. Also contains information about the license or owner.",
+       "example": "examples/simple_example.json#/visibility"
+     },
+    "definition": {
+      "$ref": "model.definition.schema.json",
+      "example": "examples/tensorflow_zoo_example.json#/definition"
+    },
+    "training": {
+      "$ref": "model.training.schema.json",
+      "example": "examples/wml_create_model_example.json#/training"
+    },
+    "trained_model": {
+      "$ref": "model.trained_model.schema.json",
+      "example": "examples/caffe2_zoo_example.json#/trained_model"
+    },
+    "evaluations": {
+      "$ref": "model.evaluations.schema.json",
+      "example": "examples/evaluation_example.json#/evaluations"
+    },
+    "provenance": {
+      "$ref": "model.provenance.schema.json",
+      "example": "examples/bias_example.json#/provenance"
+    },
+    "pipeline": {
+      "type": "object"
+    },
+    "id": {
+      "type": "string"
+    },
+    "catalog_metadata": {
+      "type": "object"
+    },
+    "_id": {
+      "type": "string"
+    },
+    "_rev": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "definitions": {
+    "domainObject": {
+      "type": "object",
+      "required": [
+        "domain_type"
+      ],
+      "properties": {
+        "tasks": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "The tasks or application problems the model addresses"
+        },
+        "industries": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "The industries which get influenced using the model"
+        },
+        "domain_type": {
+          "type": "string",
+          "description": "The type of the domain area that is being addressed by the model"
+        }
+      }
+    },
+    "refObject": {
+      "type": "object",
+      "required": [
+        "title"
+      ],
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "authors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "url": {
+          "type": "string"
+        }
+      }
+    },
+    "extractObject": {
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "confidence": {
+          "type": "number"
+        },
+        "completeness": {
+          "type": "number"
+        }
+      }
+    },
+    "visibilityObject": {
+      "type": "object",
+      "required": [
+        "visibility"
+      ],
+      "properties": {
+        "visibility": {
+          "enum": ["public", "private"]
+        },
+        "license": {
+          "type": "string",
+          "description": "Type of license model code is released under."
+        },
+        "owner": {
+          "$ref": "model.schema.json#/definitions/authorObject"
+        },
+        "business_unit": {
+          "type": "string"
+        },
+        "department": {
+          "type": "string"
+        },
+        "organization": {
+          "type": "string"
+        },
+        "division": {
+          "type": "string"
+        }
+      }
+    },
+    "authorObject": {
+      "type": "object",
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "github_id": {
+          "type": "string"
+        },
+        "business_unit": {
+          "type": "string"
+        },
+        "department": {
+          "type": "string"
+        },
+        "organization": {
+          "type": "string"
+        },
+        "division": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
