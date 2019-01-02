@@ -1,6 +1,5 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "$id":"model.training.schema.json",
   "id":"model.training.schema.json",
   "title": "Model Training",
   "description": "Metadata subobject for a model training, such as links to training datasets, training jobs, and results of jobs such as evaluation metrics. This subobject corresponds to the training stage of the model lifecycle.",

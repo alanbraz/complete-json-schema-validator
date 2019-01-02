@@ -1,0 +1,802 @@
+{
+    "id": "model.schema.json",
+    "title": "Model",
+    "description": "Declarative model metadata. Top-level object that contains discovery properties and any combination of the model subobjects. Each model subobject (definition, training, deployment, provenance) corresponds to a stage in the model lifecycle. However, it is possible to be missing information about a model from earlier phases. For example, a trained model binary from a model zoo without code or training information. Model metadata is declarative: it does not include source code, learned weights or parameters, etc. Instead, such artifacts are stored outside of the model metadata, for instance, in git, Jupyter, or cloud object storage, and the model metadata contains pointers to them. ",
+    "version": 0.4,
+    "type": "object",
+    "required": [
+        "name"
+    ],
+    "properties": {
+        "name": {
+            "type": "string",
+            "description": "Name of model.",
+            "example": "examples/simple_example.json#/name"
+        },
+        "version": {
+            "type": "string",
+            "description": "Version label for model object.",
+            "example": "examples/simple_example.json#/version"
+        },
+        "description": {
+            "type": "string",
+            "description": "Long-form description of model.",
+            "example": "examples/simple_example.json#/description"
+        },
+        "authors": {
+            "type": "array",
+            "description": "Original Authors of the model.",
+            "items": {
+                "$ref": "#/definitions/authorObject"
+            },
+            "example": "examples/wml_create_model_example.json#/authors"
+        },
+        "tags": {
+            "type": "array",
+            "description": "Assignable tags for model. Contains a user-assignable value. Referenced from WKC.",
+            "items": {
+                "type": "string"
+            },
+            "example": "examples/simple_example.json#/tags"
+        },
+        "domain": {
+            "$ref": "#/definitions/domainObject",
+            "description": "General domain or field for model.",
+            "example": "examples/simple_example.json#/domain"
+        },
+        "extraction": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/extractObject"
+            },
+            "description": "Details of automated extractors that this model is based from.",
+            "example": "examples/tensorflow_zoo_example.json#/extraction"
+        },
+        "references": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/refObject"
+            },
+            "description": "References such as academic papers that this model is based from."
+        },
+        "visibility": {
+            "$ref": "#/definitions/visibilityObject",
+            "description": "Visibility of the model, public or private. Also contains information about the license or owner.",
+            "example": "examples/simple_example.json#/visibility"
+        },
+        "definition": {
+            "example": "examples/tensorflow_zoo_example.json#/definition",
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "title": "Model Definition",
+            "description": "Metadata subobject for a model definition, such as links to code, algorithms, or neural network topologies. This subobject corresponds to the development stage (pre-training) of the model lifecycle.",
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "array",
+                    "description": "Collection of code objects that define model. May include repositories, algorithms, network topologies, etc.",
+                    "items": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/properties/definition/definitions/codeobject"
+                            },
+                            {
+                                "$ref": "#/properties/definition/definitions/repoobject"
+                            }
+                        ]
+                    }
+                },
+                "topology": {
+                    "description": "Higher-level description of network toplogy or machine learning approaches that model employs.",
+                    "type": "object"
+                },
+                "input_data_schema": {
+                    "type": "object",
+                    "description": "JSON Schema for input data that model definition may expect, such as what format and dimensions the training dataset looks like."
+                },
+                "output_data_schema": {
+                    "type": "object",
+                    "description": "JSON Schema for output data that a model definition may output, such as what format and dimensions the prediction result looks like."
+                },
+                "hyperparameter_schema": {
+                    "type": "object",
+                    "description": "JSON Schema for hyperparameters that a model definition may make use of, such as batch size, learning rate, etc."
+                },
+                "license": {
+                    "type": "string",
+                    "description": "Type of license model code is released under."
+                }
+            },
+            "definitions": {
+                "codeobject": {
+                    "type": "object",
+                    "required": [
+                        "type"
+                    ],
+                    "properties": {
+                        "type": {
+                            "type": "string",
+                            "enum": [
+                                "code"
+                            ]
+                        },
+                        "name": {
+                            "type": "string"
+                        },
+                        "description": {
+                            "type": "string"
+                        },
+                        "connection": {
+                            "$ref": "#/properties/trained_model/definitions/binaryobject/properties/connection"
+                        },
+                        "framework": {
+                            "$ref": "#/properties/trained_model/definitions/binaryobject/properties/framework"
+                        }
+                    }
+                },
+                "repoobject": {
+                    "type": "object",
+                    "required": [
+                        "type"
+                    ],
+                    "properties": {
+                        "type": {
+                            "type": "string",
+                            "enum": [
+                                "repo"
+                            ]
+                        },
+                        "repo_type": {
+                            "type": "string"
+                        },
+                        "name": {
+                            "type": "string"
+                        },
+                        "owner": {
+                            "type": "string"
+                        },
+                        "description": {
+                            "type": "string"
+                        },
+                        "url": {
+                            "type": "string"
+                        },
+                        "sha": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "training": {
+            "example": "examples/wml_create_model_example.json#/training",
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "title": "Model Training",
+            "description": "Metadata subobject for a model training, such as links to training datasets, training jobs, and results of jobs such as evaluation metrics. This subobject corresponds to the training stage of the model lifecycle.",
+            "type": "object",
+            "properties": {
+                "datasets": {
+                    "type": "array",
+                    "description": "Collection of dataset objects. Describes the dataset itself as well as the connection to the dataset. Everything WML or some other training service needs to access the dataset and use for training should be here.",
+                    "items": {
+                        "description": "Metadata to describe a dataset for a model. May be of various types such as training or input. Should be a wrapper to a Data Asset object in Watson Knowledge Catalog.",
+                        "type": "object",
+                        "properties": {
+                            "data_asset_id": {
+                                "type": "string",
+                                "description": "Foreign key to Data Asset object in Watson Knowledge Catalog"
+                            },
+                            "name": {
+                                "type": "string"
+                            },
+                            "description": {
+                                "type": "string"
+                            },
+                            "data_type": {
+                                "type": "string"
+                            },
+                            "data_format": {
+                                "type": "string"
+                            },
+                            "tasks": {
+                                "type": "array"
+                            },
+                            "sub_tasks": {
+                                "type": "array"
+                            },
+                            "dataset_split": {
+                                "type": "object",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "train": {
+                                            "type": "integer"
+                                        },
+                                        "validation": {
+                                            "type": "integer"
+                                        },
+                                        "test": {
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "required": [
+                                        "train"
+                                    ]
+                                }
+                            },
+                            "classes": {
+                                "type": "integer"
+                            },
+                            "connection": {
+                                "$ref": "#/properties/trained_model/definitions/binaryobject/properties/connection"
+                            },
+                            "schema": {
+                                "type": "object",
+                                "description": "JSON schema describing the schema of the dataset"
+                            },
+                            "data_preprocessing": {
+                                "description": "A sequence of preprocessing steps to be performed on the input dataset before the data could be inputted to the model.",
+                                "type": "object",
+                                "properties": {
+                                    "operators": {
+                                        "type": "array",
+                                        "description": "The set of transformation operations such as cropping, scaling, or data normalization",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "noise_removers": {
+                                        "type": "array",
+                                        "description": "The set of noise removal steps",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "filters": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "features": {
+                    "description": "The set of feature extraction functions.",
+                    "type": "object",
+                    "properties": {
+                        "features_function": {
+                            "type": "string",
+                            "description": "The function to extract the feature from data such as SIFT, SURF, or TF-IDF"
+                        },
+                        "features_descriptor": {
+                            "type": "string",
+                            "description": "The description of the feature extraction function"
+                        },
+                        "num_features": {
+                            "type": "integer",
+                            "description": "The length (dimensionality) of the extracted features"
+                        },
+                        "features_type": {
+                            "type": "string",
+                            "description": "The type of the extracted features such as continuous, discrete, categorical, or binary"
+                        }
+                    }
+                },
+                "hyperparameters": {
+                    "description": "Input to training of the hyperparameter configuration for a particular training job.",
+                    "$ref": "#/properties/training/definitions/hyperparameters"
+                },
+                "training_job": {
+                    "description": "Metadata to describe particular training job. May include information to connect to particular training services such as WML. Everything needed to run the job should be included here.",
+                    "$ref": "#/properties/training/definitions/job"
+                },
+                "training_output": {
+                    "description": "Connection to content that is result of training. We expect this content to be trained model binaries that are output to object storage.",
+                    "$ref": "#/properties/trained_model/definitions/binaryobject/properties/connection"
+                }
+            },
+            "definitions": {
+                "hyperparameters": {
+                    "example": "examples/hyperparameter_example.json#/training/hyperparameters",
+                    "description": "Describes hyperparameter configuration that was used for a particular job. The schema may be defined using a JSON schema.",
+                    "definitions": {
+                        "$dependent_schema": {
+                            "enum": [
+                                "/definition/hyperparameter_schema"
+                            ]
+                        }
+                    }
+                },
+                "job": {
+                    "type": "object",
+                    "description": "Describes a particular training job including information to connect to training service such as WML.",
+                    "properties": {
+                        "connection": {
+                            "description": "Connection to model training service used to run job.",
+                            "$ref": "#/properties/trained_model/definitions/binaryobject/properties/connection"
+                        }
+                    }
+                }
+            }
+        },
+        "trained_model": {
+            "example": "examples/caffe2_zoo_example.json#/trained_model",
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "title": "Trained Model",
+            "description": "Metadata subobject for a trained model, such as links to trained model binaries, scoring services, and applications that use the current model. This subobject corresponds to the deployment stage (post-training) of the model lifecycle. Trained model binaries are in this subobject and not the training object because often (like in model zoos), we do not know anything about the details of the training process to generate the binary but we wish to use the binary in a deployment such as scoring or benchmarking.",
+            "type": "object",
+            "properties": {
+                "binaries": {
+                    "type": "array",
+                    "description": "Trained model binaries. Binaries are in this subobject and not the training object because often (like in model zoos), we do not know anything about the details of the training process to generate the binary but we wish to use the binary in a deployment such as scoring or benchmarking.",
+                    "items": {
+                        "$ref": "#/properties/trained_model/definitions/binaryobject"
+                    }
+                },
+                "input_data_schema": {
+                    "type": "object",
+                    "description": "JSON Schema for input data that a trained model may expect, such as what format and dimensions a user dataset looks like."
+                },
+                "output_data_schema": {
+                    "type": "object",
+                    "description": "JSON Schema for output data that a trained model may output, such as a binary prediction or probabilistic classification looks like."
+                }
+            },
+            "definitions": {
+                "binaryobject": {
+                    "type": "object",
+                    "properties": {
+                        "name": {
+                            "type": "string"
+                        },
+                        "description": {
+                            "type": "string"
+                        },
+                        "connection": {
+                            "type": "object",
+                            "required": [
+                                "name"
+                            ],
+                            "description": "Represents connection to a resource or file. Referenced from WML API.",
+                            "properties": {
+                                "name": {
+                                    "type": "string",
+                                    "description": "Name which identifies this connection."
+                                },
+                                "connection": {
+                                    "type": "object",
+                                    "description": "Various fields needed to perform connection"
+                                },
+                                "source": {
+                                    "type": "object",
+                                    "description": "Optional details of the data store"
+                                }
+                            }
+                        },
+                        "framework": {
+                            "type": "object",
+                            "description": "AI-related software framework or library. Referenced from WML API.",
+                            "required": [
+                                "name"
+                            ],
+                            "properties": {
+                                "name": {
+                                    "type": "string"
+                                },
+                                "version": {
+                                    "type": "string"
+                                },
+                                "runtimes": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "required": [
+                                            "name",
+                                            "version"
+                                        ],
+                                        "properties": {
+                                            "name": {
+                                                "type": "string"
+                                            },
+                                            "version": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                },
+                                "libraries": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "required": [
+                                            "name",
+                                            "version"
+                                        ],
+                                        "properties": {
+                                            "name": {
+                                                "type": "string"
+                                            },
+                                            "version": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "scoringobject": {
+                    "type": "object",
+                    "required": [
+                        "type"
+                    ],
+                    "properties": {
+                        "type": {
+                            "enum": [
+                                "online",
+                                "batch"
+                            ]
+                        },
+                        "status": {
+                            "type": "object",
+                            "required": [
+                                "state"
+                            ],
+                            "properties": {
+                                "state": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "url": {
+                            "type": "string"
+                        },
+                        "schema_url": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "evaluations": {
+            "example": "examples/evaluation_example.json#/evaluations",
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "title": "Model Evaluations",
+            "description": "Metadata subobject for model evaluations or annotations. An evaluation or annotation may be applied to any phase of the model lifecycle. Examples include a security score via analyzing a model definition, performance metrics via model training, and compression score via analyzing a trained model binary.",
+            "type": "array",
+            "items": {
+                "anyOf": [
+                    {
+                        "$ref": "#/properties/evaluations/definitions/training_evaluation"
+                    },
+                    {
+                        "$ref": "#/properties/evaluations/definitions/robustness"
+                    },
+                    {
+                        "$ref": "#/properties/evaluations/definitions/bias"
+                    }
+                ]
+            },
+            "definitions": {
+                "training_evaluation": {
+                    "type": "object",
+                    "description": "Describes the results of a training job. Referenced from WML API.",
+                    "required": [
+                        "evaluation_type",
+                        "method",
+                        "metrics"
+                    ],
+                    "properties": {
+                        "evaluation_type": {
+                            "type": "string",
+                            "enum": [
+                                "training_evaluation"
+                            ]
+                        },
+                        "method": {
+                            "type": "string"
+                        },
+                        "metrics": {
+                            "type": "array"
+                        }
+                    }
+                },
+                "robustness": {
+                    "description": "Captures robustness of the input model and the hardened model",
+                    "type": "object",
+                    "required": [
+                        "evaluation_type"
+                    ],
+                    "properties": {
+                        "evaluation_type": {
+                            "type": "string",
+                            "enum": [
+                                "robustness"
+                            ]
+                        },
+                        "average_perturbation": {
+                            "type": "integer",
+                            "description": ""
+                        },
+                        "model_accuracy_adversary": {
+                            "type": "integer",
+                            "description": ""
+                        },
+                        "model_accuracy_test": {
+                            "type": "integer",
+                            "description": ""
+                        },
+                        "reduction_confidence": {
+                            "type": "integer",
+                            "description": ""
+                        },
+                        "path": {
+                            "type": "string",
+                            "description": ""
+                        },
+                        "technique": {
+                            "type": "string",
+                            "description": ""
+                        },
+                        "mode": {
+                            "type": "string",
+                            "description": ""
+                        },
+                        "type": {
+                            "type": "string",
+                            "description": ""
+                        }
+                    }
+                },
+                "bias": {
+                    "type": "object",
+                    "required": [
+                        "evaluation_type"
+                    ],
+                    "properties": {
+                        "evaluation_type": {
+                            "type": "string",
+                            "enum": [
+                                "bias"
+                            ]
+                        },
+                        "biasValue": {
+                            "type": "integer",
+                            "description": "Disparate impact ratio"
+                        },
+                        "valClassFavorTypeMinority": {
+                            "type": "integer",
+                            "description": "Count of rows where class is favourable and protected attribute (PA) is minority"
+                        },
+                        "valTypeMinority": {
+                            "type": "integer",
+                            "description": "Count of rows where protected attribute (PA) is minority"
+                        },
+                        "valClassFavorTypeMajority": {
+                            "type": "integer",
+                            "description": "Count of rows where class is favourable and PA is majority"
+                        },
+                        "valTypeMajority": {
+                            "type": "integer",
+                            "description": "Count of rows where protected attribute (PA) is majority"
+                        },
+                        "threshold": {
+                            "type": "integer",
+                            "description": "Golden Ration, specified by the user"
+                        },
+                        "majority": {
+                            "type": "string",
+                            "description": "Protected attribute (PA) values which belong to majority class"
+                        },
+                        "minority": {
+                            "type": "string",
+                            "description": "Protected attribute (PA) values which belong to minority class"
+                        },
+                        "protectedAttribute": {
+                            "type": "string",
+                            "description": "Sensitive features of the data"
+                        },
+                        "favourableClass": {
+                            "type": "string",
+                            "description": "elements in class which is favourable for bias( eg. positive sentiment, getting home load, high income etc)"
+                        },
+                        "class": {
+                            "type": "string",
+                            "description": "Various cateogries of the data"
+                        },
+                        "description": {
+                            "type": "string",
+                            "description": "Description of the bias model"
+                        }
+                    }
+                }
+            }
+        },
+        "provenance": {
+            "example": "examples/bias_example.json#/provenance",
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "title": "Model Provenance",
+            "description": "Metadata subobject for model provenance, information about previous models the current model is derived from and the modifications applied to create current model. For example, compression, robustness, bias removal, hardening, or optimization services may take a model and generate an improved model. This subobject keeps track of such modifications.",
+            "type": "object",
+            "properties": {
+                "previous_model_id": {
+                    "type": "string",
+                    "description": "ID of previous model object that has been modified to create current model."
+                },
+                "modifications": {
+                    "description": "Set of modifications/transformations applied to previous model to create current model. For example, a bias removal service was applied to the previous model to create the current model. This object then stores the results of that service.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/properties/provenance/definitions/modification"
+                    }
+                }
+            },
+            "definitions": {
+                "modification": {
+                    "type": "object",
+                    "properties": {
+                        "type": {
+                            "type": "string",
+                            "description": "Type of modification applied to model."
+                        },
+                        "modification_date": {
+                            "type": "string",
+                            "format": "date-time",
+                            "description": "Timestamp for when modification was applied."
+                        },
+                        "details": {
+                            "type": "object",
+                            "description": "Catch-all for modification details, will probably be very specific to type."
+                        }
+                    }
+                }
+            }
+        },
+        "pipeline": {
+            "type": "object"
+        },
+        "id": {
+            "type": "string"
+        },
+        "catalog_metadata": {
+            "type": "object"
+        },
+        "_id": {
+            "type": "string"
+        },
+        "_rev": {
+            "type": "string"
+        }
+    },
+    "additionalProperties": false,
+    "definitions": {
+        "domainObject": {
+            "type": "object",
+            "required": [
+                "domain_type"
+            ],
+            "properties": {
+                "tasks": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "The tasks or application problems the model addresses"
+                },
+                "industries": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "The industries which get influenced using the model"
+                },
+                "domain_type": {
+                    "type": "string",
+                    "description": "The type of the domain area that is being addressed by the model"
+                }
+            }
+        },
+        "refObject": {
+            "type": "object",
+            "required": [
+                "title"
+            ],
+            "properties": {
+                "title": {
+                    "type": "string"
+                },
+                "authors": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "url": {
+                    "type": "string"
+                }
+            }
+        },
+        "extractObject": {
+            "type": "object",
+            "required": [
+                "type"
+            ],
+            "properties": {
+                "type": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                },
+                "confidence": {
+                    "type": "number"
+                },
+                "completeness": {
+                    "type": "number"
+                }
+            }
+        },
+        "visibilityObject": {
+            "type": "object",
+            "required": [
+                "visibility"
+            ],
+            "properties": {
+                "visibility": {
+                    "enum": [
+                        "public",
+                        "private"
+                    ]
+                },
+                "license": {
+                    "type": "string",
+                    "description": "Type of license model code is released under."
+                },
+                "owner": {
+                    "$ref": "#/definitions/authorObject"
+                },
+                "business_unit": {
+                    "type": "string"
+                },
+                "department": {
+                    "type": "string"
+                },
+                "organization": {
+                    "type": "string"
+                },
+                "division": {
+                    "type": "string"
+                }
+            }
+        },
+        "authorObject": {
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "github_id": {
+                    "type": "string"
+                },
+                "business_unit": {
+                    "type": "string"
+                },
+                "department": {
+                    "type": "string"
+                },
+                "organization": {
+                    "type": "string"
+                },
+                "division": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

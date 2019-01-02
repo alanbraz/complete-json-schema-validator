@@ -1,6 +1,5 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "$id":"model.provenance.schema.json",
   "id":"model.provenance.schema.json",
   "title": "Model Provenance",
   "description": "Metadata subobject for model provenance, information about previous models the current model is derived from and the modifications applied to create current model. For example, compression, robustness, bias removal, hardening, or optimization services may take a model and generate an improved model. This subobject keeps track of such modifications.",

@@ -1,6 +1,5 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "$id":"model.evaluations.schema.json",
   "id":"model.evaluations.schema.json",
   "title": "Model Evaluations",
   "description": "Metadata subobject for model evaluations or annotations. An evaluation or annotation may be applied to any phase of the model lifecycle. Examples include a security score via analyzing a model definition, performance metrics via model training, and compression score via analyzing a trained model binary.",

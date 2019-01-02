@@ -6,8 +6,9 @@
   *    - everything is run in the root directory, dangerous due to relative pathing
   */
 
-var exampleFolderPath = "./examples";
-const schemasFolder = "./schemas";
+var exampleFolderPath = "./test/examples";
+const schemasFolder = "./test/schemas";
+const schemasFile = "./test/aimodels.schema.json";
 const topSchemaId = "model.schema.json";
 
 const fs = require("fs");
@@ -55,7 +56,7 @@ describe('Schemas', function () {
 
 // First, we validate that everything in the example folder
 // Validates according to the schemas
-describe('File Examples', function () {
+describe('File Examples from Schema directory', function () {
   fs.readdirSync(exampleFolderPath).forEach(file => {
     describe(file, function () {
       it("Conforms to the schema", function () {
@@ -63,12 +64,23 @@ describe('File Examples', function () {
         let data = JSON.parse(dataContent.toString());
         assert(data, "Invalid JSON");
         var valid = cjsv.validate(topSchemaId, schemasFolder, data);
-        console.log(valid);
-        if(!valid) {
-          // TODO: Take care of correcting the error message here.
-          // If it came from a dependent schema
-          assert(valid, JSON.stringify(validate.errors));
-        }
+        if (!valid.valid) console.error(valid.errors);
+        assert.equal(valid.valid, !file.startsWith("error"), valid.errors);
+      });
+    });
+  });
+});
+
+describe('File Examples from Schema file', function () {
+  fs.readdirSync(exampleFolderPath).forEach(file => {
+    describe(file, function () {
+      it("Conforms to the schema", function () {
+        var dataContent = fs.readFileSync(exampleFolderPath + "/" + file);
+        let data = JSON.parse(dataContent.toString());
+        assert(data, "Invalid JSON");
+        var valid = cjsv.validate(topSchemaId, schemasFile, data);
+        if (!valid.valid) console.error(valid.errors);
+        assert.equal(valid.valid, !file.startsWith("error"), valid.errors);
       });
     });
   });

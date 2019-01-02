@@ -1,6 +1,5 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "$id": "model.definition.schema.json",
   "id": "model.definition.schema.json",
   "title": "Model Definition",
   "description": "Metadata subobject for a model definition, such as links to code, algorithms, or neural network topologies. This subobject corresponds to the development stage (pre-training) of the model lifecycle.",

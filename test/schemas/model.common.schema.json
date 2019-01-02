@@ -1,6 +1,5 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "$id": "model.common.schema.json",
   "id": "model.common.schema.json",
   "title": "Common",
   "description": "Utility common definitions for model schema. Used in various parts of the other schemas.",

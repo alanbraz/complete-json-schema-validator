@@ -1,6 +1,5 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "$id": "model.schema.json",
   "id": "model.schema.json",
   "title": "Model",
   "description": "Declarative model metadata. Top-level object that contains discovery properties and any combination of the model subobjects. Each model subobject (definition, training, deployment, provenance) corresponds to a stage in the model lifecycle. However, it is possible to be missing information about a model from earlier phases. For example, a trained model binary from a model zoo without code or training information. Model metadata is declarative: it does not include source code, learned weights or parameters, etc. Instead, such artifacts are stored outside of the model metadata, for instance, in git, Jupyter, or cloud object storage, and the model metadata contains pointers to them. ",
